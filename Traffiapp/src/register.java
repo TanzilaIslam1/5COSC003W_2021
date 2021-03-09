@@ -272,9 +272,9 @@ public class register extends javax.swing.JFrame {
                                             .addComponent(telephoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(confirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(tE, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(cPE, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(cPE, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(tE, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(uE, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))
@@ -356,7 +356,7 @@ public class register extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(294, 294, 294)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(386, Short.MAX_VALUE))
+                .addContainerGap(367, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -391,27 +391,33 @@ public class register extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
             // TODO add your handling code here:
+           
             
             try {
                 
-                String query = "insert into User_Registration values (?,?,?,?,?,?,?,?,?)";
-                pS=con.prepareStatement(query);
-                pS.setString(2, Firstname.getText());
+                String query = "insert into User_Registration values (?,?,?,?,?,?,?,?,?)";  //insert values in the columns
+                pS=con.prepareStatement(query);               
+                pS.setString(2, Firstname.getText());                    //get text 
                 pS.setString(3, surname.getText());
                 pS.setString(4, gender.getSelectedItem().toString());
                 pS.setString(5, email.getText());
                 pS.setString(6, telephoneNumber.getText());
                 pS.setString(7, username.getText());
                 pS.setString(8, confirmPassword.getText());
-                pS.setString(9, "Member");
+                pS.setString(9, "Member");                              //insert member for the role column
                 
+                    
                 pS.execute();
-                JOptionPane.showMessageDialog(null, "Data saved!");
                 
-            } catch (Exception e){
+                JOptionPane.showMessageDialog(null, "Data saved!");        //display msg 
                 
-               JOptionPane.showMessageDialog(null, e); 
+                } catch (Exception e){
+                
+                
+               JOptionPane.showMessageDialog(null, e);                    //display error
             }
+            
+            
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void surnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_surnameActionPerformed
@@ -468,7 +474,7 @@ public class register extends javax.swing.JFrame {
         Pattern p=Pattern.compile(pattern);
         Matcher match = p.matcher(telephoneNumber.getText());
         if (!match.matches()){
-            tE.setText("Incorrect number!");
+            tE.setText("Enter 11 digits!");
 
         } else {
             tE.setText(null);
@@ -483,7 +489,7 @@ public class register extends javax.swing.JFrame {
         Pattern p=Pattern.compile(pattern);
         Matcher match = p.matcher(username.getText());
         if (!match.matches()){
-            uE.setText("Please only letters/numbers!");
+            uE.setText("Enter only letters/numbers!");
 
         } else {
             uE.setText(null);
@@ -510,11 +516,11 @@ public class register extends javax.swing.JFrame {
         String pattern = "^[a-zA-Z0-9]{6,12}$";
         Pattern p=Pattern.compile(pattern);
         Matcher match = p.matcher(confirmPassword.getText());
-        if (confirmPassword.getText().equals(Password.getText())){
-            cPE.setText(null);
+        if (confirmPassword.getText().equals(Password.getText())){  // if password matches confirm password 
+            cPE.setText(null);                     //dont show anything 
             
         } else  {
-            cPE.setText("incorrect");
+            cPE.setText("Incorrect!");              //else error msg
             
         }
     }//GEN-LAST:event_confirmPasswordKeyReleased
