@@ -296,7 +296,7 @@ public class register extends javax.swing.JFrame {
             
             try {
                 
-                String query = "insert into User_Registration values (?,?,?,?,?,?,?,?)";
+                String query = "insert into User_Registration values (?,?,?,?,?,?,?,?,?)";
                 pS=con.prepareStatement(query);
                 pS.setString(2, jTextField1.getText());
                 pS.setString(3, jTextField2.getText());
@@ -305,6 +305,7 @@ public class register extends javax.swing.JFrame {
                 pS.setString(6, jTextField5.getText());
                 pS.setString(7, jTextField6.getText());
                 pS.setString(8, jTextField8.getText());
+                pS.setString(9, "Member");
                 
                 pS.execute();
                 JOptionPane.showMessageDialog(null, "Data saved!");

@@ -61,7 +61,8 @@ public class DBConnection {
                 + " userEmail  VARCHAR (50) NOT NULL,"
                 + " userTel  VARCHAR (50) NOT NULL,"
                 + " userName  VARCHAR (50) NOT NULL,"
-                + " userPassword  VARCHAR (50) NOT NULL" + ") ;";
+                + " userPassword  VARCHAR (50) NOT NULL,"
+                + " Role  VARCHAR (50)" + ") ;";
               
 
         try {
