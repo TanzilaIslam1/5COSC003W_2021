@@ -9,10 +9,12 @@
  * @author tanzi
  */
 
+
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 public class DBConnection {
     
@@ -37,11 +39,11 @@ public class DBConnection {
             try {
             connection = DriverManager.getConnection(url);
             
-            System.out.println("Connected to the database4");
+            System.out.println("Connected to the database");
             
             
                 } catch (Exception e) {
-                    System.out.println("Erroor connection to the database " + e.getMessage());
+                    System.out.println("Error connection to the database " + e.getMessage());
                 }
           
              return connection;
@@ -54,15 +56,20 @@ public class DBConnection {
        
        
         String table = "CREATE TABLE if not exists User_Registration ("
-                + " userID    INTEGER  PRIMARY KEY AUTOINCREMENT,"
-                + " userFirstName  VARCHAR (50) NOT NULL,"
-                + " userSurname  VARCHAR (50) NOT NULL,"
-                + " userGender  VARCHAR (1) NOT NULL,"
-                + " userEmail  VARCHAR (50) NOT NULL,"
-                + " userTel  VARCHAR (50) NOT NULL,"
-                + " userName  VARCHAR (50) NOT NULL,"
-                + " userPassword  VARCHAR (50) NOT NULL,"
-                + " Role  VARCHAR (50)" + ") ;";
+                + " userID INTEGER  PRIMARY KEY AUTOINCREMENT,"
+                + " userFirstName VARCHAR (50) NOT NULL,"
+                + " userSurname VARCHAR (50) NOT NULL,"
+                + " userGender VARCHAR (1) NOT NULL,"
+                + " userEmail VARCHAR (50) NOT NULL,"
+                + " userTel VARCHAR (50) NOT NULL,"
+                + " userName VARCHAR (50) NOT NULL,"
+                + " userPassword VARCHAR (50),"
+                + " type VARCHAR (50) NOT NULL,"
+                + " Salt VARCHAR (50) NOT NULL,"
+                + " EncryptedPass VARCHAR (50) NOT NULL"+ ") ;";
+        
+        
+        
               
 
         try {
@@ -76,6 +83,46 @@ public class DBConnection {
             } catch(Exception e) {
              System.out.println("Error creating User_Registration table");
         }
+        
+        
+        String loginT = "CREATE TABLE if not exists Login ("
+                + " loginID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + " loginTimeDate DATETIME NOT NULL,"   
+                + " logOutTimeDate DATETIME," 
+                + " userName VARCHAR (50) NOT NULL"+ ") ;";
+        
+        
+        try {
+            
+            Statement sqlStatement =connection.createStatement();
+            
+            sqlStatement.executeUpdate(loginT);
+            
+            System.out.println("Login table created!");
+           
+            } catch(Exception e) {
+             System.out.println("Error creating Login table");
+        }
+               
     }
+       
+        public static void updateTime (java.sql.Timestamp  logOutTimeDate, String uname) {
+             Connection pS = DBConnection.getConn();
+             String query ="UPDATE Login SET logOutTimeDate= '" + logOutTimeDate + "' WHERE userName = " + uname;
+              try {
+              
+              java.sql.Statement statement = pS.createStatement();
+              statement.executeUpdate(query);
+              
+              System.out.println("Done");
+                
+           
+                
+            } catch (Exception e) {
+                    
+             System.out.println("Couldnt update");
+            }
+              
+        }
     
 }

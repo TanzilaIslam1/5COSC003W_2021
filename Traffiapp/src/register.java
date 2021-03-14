@@ -3,6 +3,9 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
@@ -11,10 +14,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.*;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 import java.util.regex.*;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.interfaces.PBEKey;
+import javax.crypto.spec.PBEKeySpec;
+
 
 
 /*
@@ -28,20 +39,73 @@ import java.util.regex.*;
  * @author thasiii
  */
 public class register extends javax.swing.JFrame {
-
-        Connection con = null;
-        ResultSet results = null;
-        PreparedStatement pS = null;
-   
     
-    /**
-     * Creates new form register
-     */
+        
+
+        Connection con = null;               //con null
+        ResultSet results = null;            //result null
+        PreparedStatement pS = null;           //statement null
+        
+        
+        private static final Random RANDOM = new SecureRandom();
+        private static final String letters = "AS3476FAHD67";
+        private static final int iteration= 10000;
+        private static final int key_length = 256;
+        
+        public static String salt (int length) {     //salt method
+            
+            StringBuilder value = new StringBuilder (length);
+            for (int i =0; i < length; i++) {
+                value.append(letters.charAt(RANDOM.nextInt(letters.length())));
+                System.out.println(i + " " + value);
+            }
+            System.out.println(value);
+            return new String (value);
+            
+        }
+        public static byte[] hash (char [] password, byte [] salt){
+           PBEKeySpec spec = new PBEKeySpec (password,salt, iteration , key_length);
+           Arrays.fill(password,Character.MIN_VALUE);
+           try {
+               SecretKeyFactory sf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+               System.out.println(Arrays.toString(sf.generateSecret(spec).getEncoded()));
+               return sf.generateSecret(spec).getEncoded();
+           } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+               JOptionPane.showMessageDialog(null, "Error hashing password"); 
+               
+           } finally  {
+               spec.clearPassword();
+           }
+            return null;
+           
+            
+        }
+        
+        public static String generateSPass (String password,String salt) {    //generate secure pass method with hash
+            
+            String pV=null;                                          //pass is null
+            byte[] securePass =hash(password.toCharArray(),salt.getBytes());
+            pV = Base64.getEncoder().encodeToString(securePass);
+            return pV;
+        }
+        
+        
+          public static boolean verifyUserPassword (String pPassword,String sPassword, String salt)  {    //verify pass method
+              
+              boolean pV=false ;
+              String nSecureP =generateSPass(pPassword,salt);          //if the pass in equal to the generate secure pass
+              pV = nSecureP.equalsIgnoreCase(sPassword);              
+              
+              return pV;     //return value
+          }
+          
+   
 
     
     public register() {
        
         initComponents();
+        setDefaultCloseOperation(register.EXIT_ON_CLOSE);
         ImageIcon img = new ImageIcon ("traffiapp_logo.png");
 
         jLabel1.setIcon(img); 
@@ -101,6 +165,7 @@ public class register extends javax.swing.JFrame {
         sE = new javax.swing.JLabel();
         tE = new javax.swing.JLabel();
         cPE = new javax.swing.JLabel();
+        BackB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -214,6 +279,13 @@ public class register extends javax.swing.JFrame {
 
         cPE.setForeground(new java.awt.Color(255, 0, 0));
 
+        BackB.setText("GO BACK");
+        BackB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackBActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -224,18 +296,20 @@ public class register extends javax.swing.JFrame {
                         .addContainerGap(53, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Password, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3)))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(BackB)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(Password, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel3))))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addGap(49, 49, 49)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -289,13 +363,12 @@ public class register extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(323, 323, 323))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(292, 292, 292))))
+                .addComponent(jLabel2)
+                .addGap(323, 323, 323))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(292, 292, 292))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -345,7 +418,9 @@ public class register extends javax.swing.JFrame {
                         .addComponent(pE, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(8, 8, 8)))
                 .addGap(20, 20, 20)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BackB, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
@@ -393,28 +468,75 @@ public class register extends javax.swing.JFrame {
             // TODO add your handling code here:
            
             
+           
+            
             try {
                 
-                String query = "insert into User_Registration values (?,?,?,?,?,?,?,?,?)";  //insert values in the columns
-                pS=con.prepareStatement(query);               
+                
+                String name = Firstname.getText();
+                String su=surname.getText();
+                String e=email.getText();
+                String t=telephoneNumber.getText();
+                String u=username.getText();
+                String c=confirmPassword.getText();
+                
+                String query = "insert into User_Registration values (?,?,?,?,?,?,?,?,?,?,?)";  //insert values in the columns
+                String s = salt(100);   //salt
+                
+                String pass = generateSPass(confirmPassword.getText(),s);  //encrypted pass
+                 
+                pS=con.prepareStatement(query);                
+                
+                 
                 pS.setString(2, Firstname.getText());                    //get text 
+                
                 pS.setString(3, surname.getText());
                 pS.setString(4, gender.getSelectedItem().toString());
                 pS.setString(5, email.getText());
                 pS.setString(6, telephoneNumber.getText());
                 pS.setString(7, username.getText());
                 pS.setString(8, confirmPassword.getText());
-                pS.setString(9, "Member");                              //insert member for the role column
+                pS.setString(9, "Member");
+                pS.setString(10, s);
+                pS.setString(11,pass);
+                //insert member for the role column
                 
+                if (name.equals("")|| su.equals("")||e.equals("")||t.equals("") ||u.equals("")||c.equals("")) {                         //if the fields are empty
+  
+                JOptionPane.showMessageDialog(null, "There are empty fields! Try again.");        //display msg
+                
+                
+
+                 }
+                 else {       // else
                     
-                pS.execute();
-                
-                JOptionPane.showMessageDialog(null, "Data saved!");        //display msg 
-                
+                  pS.execute();                             //execute and store in the database
+                  JOptionPane.showMessageDialog(null, "Data saved!");        //display msg 
+                  
+                  Firstname.setText("");               //set textfield empty 
+                  surname.setText("");
+                  telephoneNumber.setText("");
+                  username.setText("");
+                  confirmPassword.setText("");
+                  email.setText("");
+                  Password.setText("");
+                 
+                  userLogin login = new userLogin ();
+                  login.setVisible(true);
+                  this.setVisible(false);
+                 
+                 }
                 } catch (Exception e){
                 
                 
                JOptionPane.showMessageDialog(null, e);                    //display error
+                  Firstname.setText("");
+                  surname.setText("");
+                  telephoneNumber.setText("");                 //set textfield empty
+                  username.setText("");
+                  confirmPassword.setText("");
+                  email.setText("");
+                  Password.setText("");
             }
             
             
@@ -525,6 +647,15 @@ public class register extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_confirmPasswordKeyReleased
 
+    private void BackBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackBActionPerformed
+        // TODO add your handling code here:
+        
+        userLogin login = new userLogin () ;
+        login.setVisible(true);
+        this.setVisible(false);
+        
+    }//GEN-LAST:event_BackBActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -563,6 +694,7 @@ public class register extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BackB;
     private javax.swing.JTextField Firstname;
     private javax.swing.JTextField Password;
     private javax.swing.JLabel cPE;

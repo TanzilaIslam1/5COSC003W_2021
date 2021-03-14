@@ -1,10 +1,13 @@
 
+
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.Date;
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -18,11 +21,11 @@ import javax.swing.ImageIcon;
  */
 public class homeuser extends javax.swing.JFrame {
 
-    /**
-     * Creates new form homeuser
-     */
+    public static java.sql.Timestamp logout;
+    
     public homeuser() {
         initComponents();
+        setDefaultCloseOperation(homeuser.EXIT_ON_CLOSE);
         ImageIcon img = new ImageIcon ("traffiapp_logo.png");
 
         jLabel1.setIcon(img); 
@@ -62,7 +65,6 @@ class jPanelGradient extends JPanel {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\tanzi\\Desktop\\Uni 2nd year\\Software development project\\Traffiapp\\src\\image\\traffiapp_logo.png")); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(327, 179));
 
         jButton5.setText("HOME");
@@ -74,6 +76,11 @@ class jPanelGradient extends JPanel {
         jButton8.setText("DASHBOARD 3");
 
         jButton1.setText("LOGOUT");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -142,6 +149,20 @@ class jPanelGradient extends JPanel {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+              java.sql.Timestamp logoutTime = new java.sql.Timestamp(new Date().getTime());
+              logout = logoutTime;
+              System.out.println(logout); 
+              
+              JOptionPane.showMessageDialog(this,"Logged out successfully!");
+                
+              userLogin login = new userLogin();
+              login.setVisible(true);
+              this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
