@@ -195,6 +195,7 @@ class jPanelGradient extends JPanel {
               userLogin login = new userLogin();
               login.setVisible(true);
               this.setVisible(false);
+              this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

@@ -21,7 +21,8 @@ public class Traffiapp {
         
      DBConnection.getConn();
      DBConnection.creatingTable();
-     
+//     userLogin uL = new userLogin ();
+//     uL.setVisible(true);
      
      
      

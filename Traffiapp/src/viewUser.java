@@ -1,10 +1,13 @@
 
+
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.Date;
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -18,9 +21,8 @@ import javax.swing.ImageIcon;
  */
 public class viewUser extends javax.swing.JFrame {
 
-    /**
-     * Creates new form viewUser
-     */
+    public static java.sql.Timestamp logout;
+     
     public viewUser() {
         initComponents();
         setDefaultCloseOperation(viewUser.EXIT_ON_CLOSE);
@@ -106,6 +108,11 @@ class jPanelGradient extends JPanel {
         jButton4.setText("DELETE");
 
         jButton1.setText("LOGOUT");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton9.setText("DASHBOARD 4");
 
@@ -186,6 +193,21 @@ class jPanelGradient extends JPanel {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+              java.sql.Timestamp logoutTime = new java.sql.Timestamp(new Date().getTime());
+              logout = logoutTime;
+              System.out.println(logout); 
+              
+              JOptionPane.showMessageDialog(this,"Logged out successfully!");
+                
+              userLogin login = new userLogin();
+              login.setVisible(true);
+              this.setVisible(false);
+              this.dispose();
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
