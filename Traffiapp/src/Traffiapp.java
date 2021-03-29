@@ -2,8 +2,9 @@
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
 
-
+// created by : Tanzila Islam (ID: w1723144)
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -11,19 +12,21 @@ import java.security.spec.InvalidKeySpecException;
  * and open the template in the editor.
  */
 
-/**
- *
- * @author tanzi
- */
 public class Traffiapp {
     
     public static void main(String[] args) throws InvalidKeySpecException, NoSuchAlgorithmException {
         
      DBConnection.getConn();
-     DBConnection.creatingTable();
-//     userLogin uL = new userLogin ();
-//     uL.setVisible(true);
+      // DBConnection.creatingTable();
+     //DBConnection.cTrafficDataTables();
+     // ArrayList<String> fileData= CSVfiles.readfile("./Data.csv");
+     // DBConnection.insertR(fileData);
+     // DBConnection.insertC(fileData);
+     //DBConnection.insertMi(fileData);
+     //DBConnection.insertMa(fileData);
      
+     userLogin login = new userLogin ();
+     login.setVisible(true);
      
      
     }

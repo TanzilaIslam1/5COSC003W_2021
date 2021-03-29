@@ -26,7 +26,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.interfaces.PBEKey;
 import javax.crypto.spec.PBEKeySpec;
 
-
+// created by : Tanzila Islam (ID: w1723144)
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -105,7 +105,7 @@ public class register extends javax.swing.JFrame {
     public register() {
        
         initComponents();
-        setDefaultCloseOperation(register.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(register.EXIT_ON_CLOSE);               
         ImageIcon img = new ImageIcon ("traffiapp_logo.png");
 
         jLabel1.setIcon(img); 
@@ -169,6 +169,7 @@ public class register extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         jLabel2.setText("Not a Member? Sign Up");
 
         surname.addActionListener(new java.awt.event.ActionListener() {
