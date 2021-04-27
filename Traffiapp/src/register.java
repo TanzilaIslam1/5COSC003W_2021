@@ -232,7 +232,7 @@ public class register extends javax.swing.JFrame {
 
         jLabel3.setText("(6 or more character)");
 
-        gender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "F", "M", " " }));
+        gender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "F", "M" }));
         gender.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 genderActionPerformed(evt);
@@ -640,7 +640,7 @@ public class register extends javax.swing.JFrame {
         Pattern p=Pattern.compile(pattern);
         Matcher match = p.matcher(confirmPassword.getText());
         if (confirmPassword.getText().equals(Password.getText())){  // if password matches confirm password 
-            cPE.setText(null);                     //dont show anything 
+            cPE.setText(null);                     //empty label 
             
         } else  {
             cPE.setText("Incorrect!");              //else error msg

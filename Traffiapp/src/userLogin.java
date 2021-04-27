@@ -274,7 +274,7 @@ public class userLogin extends javax.swing.JFrame {
            pS= con.prepareStatement(query); 
        
            pS.setString(1, username);   //get username text field   
-           pS.setString(2, pText.getText());   //get username text field   
+           pS.setString(2, pText.getText());   //get password text field   
            pS.setString(3, String.valueOf(jComboBox1.getSelectedItem()));   //combo selection
            
            
