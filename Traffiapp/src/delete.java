@@ -69,6 +69,12 @@ public class delete extends javax.swing.JFrame {
             jTable1.setModel(DbUtils.resultSetToTableModel(rs));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
+        }finally{
+            try {
+                rs.close();
+                pst.close();
+            } catch (Exception e) {
+            }
         }
     }
     

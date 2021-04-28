@@ -70,6 +70,12 @@ public class editUser extends javax.swing.JFrame {
                 jComboBox1.addItem(rs.getString("userID"));
             }
         } catch (Exception e) {
+        } finally{
+            try {
+                rs.close();
+                pst.close();
+            } catch (Exception e) {
+            }
         }
     }
     
@@ -95,6 +101,12 @@ public class editUser extends javax.swing.JFrame {
             jTable1.setModel(DbUtils.resultSetToTableModel(rs));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
+        } finally{
+            try {
+                rs.close();
+                pst.close();
+            } catch (Exception e) {
+            }
         }
     }
     
@@ -492,6 +504,12 @@ class jPanelGradient extends JPanel {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
+        } finally{
+            try {
+                rs.close();
+                pst.close();
+            } catch (Exception e) {
+            }
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -516,6 +534,12 @@ class jPanelGradient extends JPanel {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
+        } finally{
+            try {
+                rs.close();
+                pst.close();
+            } catch (Exception e) {
+            }
         }
     }//GEN-LAST:event_jTable1KeyReleased
 
@@ -545,6 +569,12 @@ class jPanelGradient extends JPanel {
             updateTable();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
+        } finally{
+            try {
+                rs.close();
+                pst.close();
+            } catch (Exception e) {
+            }
         }
     }//GEN-LAST:event_jButton11ActionPerformed
 
@@ -571,6 +601,12 @@ class jPanelGradient extends JPanel {
                 txt_type.setText(rs.getString("type"));
             }
         } catch (Exception e) {
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (Exception e) {
+            }
         }
     }//GEN-LAST:event_jComboBox1PopupMenuWillBecomeInvisible
 
